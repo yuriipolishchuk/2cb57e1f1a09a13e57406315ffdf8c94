@@ -7,6 +7,9 @@ brew install packer
 wget https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v0.3.0/packer-provisioner-goss-v0.3.0-darwin-amd64 -O ~/.packer.d/plugins/packer-provisioner-goss
 
 chmod +x ~/.packer.d/plugins/packer-provisioner-goss
+
+brew install warrensbox/tap/tfswitch
+tfswitch 0.12.3
 ```
 
 ### 1. Create variables file and edit it with appropriate configuration
