@@ -27,7 +27,7 @@ module "bastion" {
   public_subnet_ids      = data.terraform_remote_state.vpc.outputs.public_subnets
   elb_availability_zones = data.terraform_remote_state.vpc.outputs.azs
 
-  instance_type = "t2.medium"
+  instance_type = "t3a.nano"
 
   tags = [
     {
