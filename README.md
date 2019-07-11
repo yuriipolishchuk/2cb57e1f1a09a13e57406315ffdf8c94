@@ -43,5 +43,6 @@ terraform init; terraform plan -out plan ; terraform apply plan
 
 # TODO:
 * remove ansible from ami
+* fix tags for resources
 * terragrunt
 * atlantis
