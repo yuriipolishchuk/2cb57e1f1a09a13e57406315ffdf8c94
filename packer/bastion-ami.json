@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/*ubuntu-bionic-18.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": [
+          "099720109477"
+        ],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "bastion-{{timestamp}}"
+    },
+    {
+      "type": "docker",
+      "image": "ubuntu:bionic",
+      "discard": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "which sudo || (apt-get update; apt-get install --yes sudo)",
+        "sudo apt-get update",
+        "sudo apt-get install --yes software-properties-common",
+        "sudo apt-add-repository --yes --update ppa:ansible/ansible",
+        "sudo apt-get install --yes ansible"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "../ansible/playbook.yaml",
+      "playbook_dir": "../ansible",
+      "extra_arguments": []
+    },
+    {
+      "type": "goss",
+      "tests": [
+        "../goss/goss.yaml"
+      ]
+    }
+  ]
+}
