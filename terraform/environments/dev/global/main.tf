@@ -1,11 +1,11 @@
-terraform {
-  backend "s3" {
-    bucket         = "terraform-state.your-org.tld"
-    key            = "global"
-    region         = "us-east-1"
-    dynamodb_table = "terraform_lock"
-  }
-}
+# terraform {
+#   backend "s3" {
+#     bucket         = "terraform-state.your-org.tld"
+#     key            = "global"
+#     region         = "us-east-1"
+#     dynamodb_table = "terraform_lock"
+#   }
+# }
 
 variable "aws_profile" {
 }
