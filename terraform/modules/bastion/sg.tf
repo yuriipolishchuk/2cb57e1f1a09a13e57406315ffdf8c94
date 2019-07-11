@@ -1,13 +1,13 @@
 resource "aws_security_group" "ssh_bastion_sg" {
   name        = "bastion"
   description = "Allow SSH on bastion instances"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = ["${aws_security_group.elb_ssh_bastion_sg.id}"]
+    security_groups = [aws_security_group.elb_ssh_bastion_sg.id]
     self            = true
   }
 
@@ -26,13 +26,13 @@ resource "aws_security_group" "ssh_bastion_sg" {
 resource "aws_security_group" "elb_ssh_bastion_sg" {
   name        = "bastion-elb"
   description = "Allow SSH on ELB for bastion"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = "${var.elb_ingress_cidr_blocks}"
+    cidr_blocks = var.elb_ingress_cidr_blocks
     self        = true
   }
 
@@ -47,3 +47,4 @@ resource "aws_security_group" "elb_ssh_bastion_sg" {
     Name = "bastion-elb"
   }
 }
+

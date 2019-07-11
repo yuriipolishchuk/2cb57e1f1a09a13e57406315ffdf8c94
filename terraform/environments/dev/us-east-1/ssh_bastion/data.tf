@@ -8,3 +8,4 @@ data "terraform_remote_state" "vpc" {
     dynamodb_table = "terraform_lock"
   }
 }
+

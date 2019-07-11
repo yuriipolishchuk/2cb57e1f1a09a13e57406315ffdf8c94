@@ -1,18 +1,18 @@
 locals {
-  ami_owner = "${var.ami_owner == "" ? data.aws_caller_identity.this.account_id : var.ami_owner}"
+  ami_owner = var.ami_owner == "" ? data.aws_caller_identity.this.account_id : var.ami_owner
 }
 
 resource "aws_key_pair" "this" {
-  key_name   = "${var.key_name}"
-  public_key = "${var.public_key}"
+  key_name   = var.key_name
+  public_key = var.public_key
 }
 
 resource "aws_launch_configuration" "this" {
   name            = "bastion"
-  image_id        = "${data.aws_ami.this.id}"
-  instance_type   = "${var.instance_type}"
-  key_name        = "${aws_key_pair.this.key_name}"
-  security_groups = ["${aws_security_group.ssh_bastion_sg.id}"]
+  image_id        = data.aws_ami.this.id
+  instance_type   = var.instance_type
+  key_name        = aws_key_pair.this.key_name
+  security_groups = [aws_security_group.ssh_bastion_sg.id]
 
   lifecycle {
     create_before_destroy = true
@@ -23,8 +23,8 @@ resource "aws_autoscaling_group" "this" {
   name_prefix          = "bastion-"
   max_size             = 1
   min_size             = 1
-  launch_configuration = "${aws_launch_configuration.this.name}"
-  vpc_zone_identifier  = "${var.private_subnet_ids}"
+  launch_configuration = aws_launch_configuration.this.name
+  vpc_zone_identifier  = var.private_subnet_ids
   force_delete         = true
 
   wait_for_capacity_timeout = "300s"
@@ -44,14 +44,14 @@ resource "aws_autoscaling_group" "this" {
     },
   ]
 
-  load_balancers = ["${aws_elb.this.id}"]
+  load_balancers = [aws_elb.this.id]
 }
 
 resource "aws_elb" "this" {
   name = "bastion-elb"
 
-  subnets                   = "${var.public_subnet_ids}"
-  security_groups           = ["${aws_security_group.elb_ssh_bastion_sg.id}"]
+  subnets                   = var.public_subnet_ids
+  security_groups           = [aws_security_group.elb_ssh_bastion_sg.id]
   cross_zone_load_balancing = true
 
   health_check {
@@ -69,3 +69,4 @@ resource "aws_elb" "this" {
     lb_protocol       = "tcp"
   }
 }
+

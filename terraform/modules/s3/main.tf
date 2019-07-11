@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "this" {
-  bucket = "${var.bucket}"
+  bucket = var.bucket
   acl    = "private"
 
   versioning {
-    enabled = "${var.versioning_enabled}"
+    enabled = var.versioning_enabled
   }
 
   server_side_encryption_configuration {
@@ -14,5 +14,6 @@ resource "aws_s3_bucket" "this" {
     }
   }
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
+

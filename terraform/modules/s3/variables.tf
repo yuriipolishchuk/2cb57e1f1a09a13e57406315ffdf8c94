@@ -7,7 +7,7 @@ variable "versioning_enabled" {
 }
 
 variable "tags" {
-  type    = "map"
+  type    = map(string)
   default = {}
 }
 

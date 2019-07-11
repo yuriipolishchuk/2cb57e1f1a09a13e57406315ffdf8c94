@@ -7,12 +7,13 @@ terraform {
   }
 }
 
-variable "aws_profile" {}
+variable "aws_profile" {
+}
 
 provider "aws" {
   region                  = "us-east-1"
   shared_credentials_file = "~/.aws/credentials"
-  profile                 = "${var.aws_profile}"
+  profile                 = var.aws_profile
   version                 = "~> 2.18.0"
 }
 
@@ -33,3 +34,4 @@ resource "aws_dynamodb_table" "tf_lock" {
     type = "S"
   }
 }
+
