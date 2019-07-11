@@ -8,7 +8,7 @@ resource "aws_key_pair" "this" {
 }
 
 resource "aws_launch_configuration" "this" {
-  name            = "bastion"
+  name_prefix     = "bastion-"
   image_id        = data.aws_ami.this.id
   instance_type   = var.instance_type
   key_name        = aws_key_pair.this.key_name
